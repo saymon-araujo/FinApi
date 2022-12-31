@@ -46,4 +46,20 @@ app.get("/statement", verifyIfAccountExists, (req, res) => {
   return res.json(costumer.statement);
 });
 
+app.post("/deposit", verifyIfAccountExists, (req, res) => {
+  const { costumer } = req;
+  const { description, amount } = req.body;
+
+  const statementOperation = {
+    description,
+    amount,
+    created_at: new Date(),
+    type: "debit",
+  };
+
+  costumer.statement.push(statementOperation);
+
+  return res.status(201).send();
+});
+
 app.listen(3030);
